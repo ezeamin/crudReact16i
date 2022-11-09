@@ -2,7 +2,9 @@ import React, { useRef, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-const FormTarea = () => {
+const FormTarea = (props) => {
+  const { tareas, setTareas } = props;
+
   const [tarea, setTarea] = useState('');
 
   const inputRef = useRef();
@@ -14,17 +16,27 @@ const FormTarea = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Caso error
     if (tarea.trim().length === 0) {
       inputRef.current.classList.add('is-invalid');
       alert('No es valido');
       return;
     }
 
+    // Caso exitoso
     inputRef.current.classList.remove('is-invalid');
 
-    localStorage.setItem("tareas",JSON.stringify([tarea]))
+    const nuevasTareas = [
+      ...tareas, //Operador "spread"
+      {
+        tarea, // tarea: tarea, -> es lo mismo
+        isDone: false,
+      },
+    ];
 
-    console.log(tarea);
+    setTareas(nuevasTareas);
+
+    localStorage.setItem('tareas', JSON.stringify(nuevasTareas));
   };
 
   return (

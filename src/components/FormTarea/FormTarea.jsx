@@ -31,6 +31,7 @@ const FormTarea = (props) => {
       {
         tarea, // tarea: tarea, -> es lo mismo
         isDone: false,
+        id: Math.round(Math.random() * 30000),
       },
     ];
 

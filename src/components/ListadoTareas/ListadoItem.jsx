@@ -15,26 +15,50 @@ const ListadoItem = (props) => {
   }, [tarea]);
 
   const handleDone = () => {
-    const nuevoEstadoTarea = {
-      ...tarea,
-      isDone: !tarea.isDone,
-    };
+    //? OPCION 1 (mas larga) ------------------------
 
-    const tareaIndex = tareas.findIndex((elemento) => {
-      return elemento.id === tarea.id;
+    //* Creo un objeto con la nueva info de la tarea
+    // const nuevoEstadoTarea = {
+    //   ...tarea,
+    //   isDone: !tarea.isDone,
+    // };
+
+    //* Busco la posicion en el array de las tareas
+    // const tareaIndex = tareas.findIndex((elemento) => {
+    //   return elemento.id === tarea.id;
+    // });
+
+    //* No se pueden modificar las props (REGLA), menos algo que
+    //* viene de un useState (habria que usar setTareas) para ello
+    // const nuevoArregloTareas = [...tareas]; // Copio el arreglo de las props
+
+    //* Modifico la tarea especifica en la COPIA del arreglo original
+    // nuevoArregloTareas[tareaIndex] = nuevoEstadoTarea;
+
+    //? OPCION 2 (optimizacion de la 1) ------------------------
+
+    //* El .map devuelve un NUEVO arreglo, por lo que esta
+    //* operacion es valida, ya que no modifica las props
+    const nuevoArregloTareas = tareas.map((elemento) => {
+      //* Si es la tarea buscada, la modifico
+      if (elemento.id === tarea.id) {
+        return {
+          ...elemento,
+          isDone: !elemento.isDone,
+        };
+      }
+
+      //* Sino, devuelvo la tarea tal cual está
+      return elemento;
     });
 
-    // No se pueden modificar las props (REGLA), menos algo que
-    // viene de un useState (habria que usar setTareas) para ello
-    const nuevoArregloTareas = [...tareas]; // Copio el arreglo de las props
+    //? EN CUALQUIER CASO, TERMINAR CON: -----------------------
 
-    // Modifico la tarea especifica en la COPIA del arreglo original
-    nuevoArregloTareas[tareaIndex] = nuevoEstadoTarea;
-
-    // Guardo los nuevos valores
+    //* Guardo los nuevos valores (esto se podria, y deberia, hacer con un useEffect
+    //* dentro de App.js, cuando cambie la variable "tareas")
     localStorage.setItem('tareas', JSON.stringify(nuevoArregloTareas));
 
-    // Llamo a cambiar la variable tareas con los nuevos valores
+    //* Llamo a cambiar la variable tareas de App.js con los nuevos valores
     setTareas(nuevoArregloTareas);
   };
 

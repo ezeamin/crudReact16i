@@ -14,10 +14,16 @@ const App = () => {
     }
   }, []);
 
+  const changeTareasArray = (nuevoArreglo) => {
+    localStorage.setItem('tareas', JSON.stringify(nuevoArreglo));
+
+    setTareas(nuevoArreglo);
+  };
+
   return (
     <div className='d-flex flex-column justify-content-center align-items-center vh-100'>
-      <FormTarea tareas={tareas} setTareas={setTareas} />
-      <ListadoTareas tareas={tareas} setTareas={setTareas} />
+      <FormTarea tareas={tareas} changeTareasArray={changeTareasArray} />
+      <ListadoTareas tareas={tareas} changeTareasArray={changeTareasArray} />
     </div>
   );
 };

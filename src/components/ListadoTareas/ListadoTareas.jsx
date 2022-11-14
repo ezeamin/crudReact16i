@@ -3,17 +3,17 @@ import { ListGroup } from 'react-bootstrap';
 import ListadoItem from './ListadoItem';
 
 const ListadoTareas = (props) => {
-  const { tareas, setTareas } = props;
+  const { tareas, changeTareasArray } = props;
 
   return (
     <ListGroup className='mt-2'>
-      {tareas.map((tarea, index) => {
+      {tareas.map((tarea) => {
         return (
           <ListadoItem
-            key={index}
+            key={tarea.id}
             tarea={tarea}
             tareas={tareas}
-            setTareas={setTareas}
+            changeTareasArray={changeTareasArray}
           />
         );
       })}

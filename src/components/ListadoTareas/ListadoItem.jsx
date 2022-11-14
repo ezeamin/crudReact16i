@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Form, ListGroup } from 'react-bootstrap';
 
 const ListadoItem = (props) => {
-  const { tarea, tareas, setTareas } = props;
+  const { tarea, tareas, changeTareasArray } = props;
 
   const checkboxRef = useRef();
 
@@ -13,6 +13,14 @@ const ListadoItem = (props) => {
       checkboxRef.current.checked = false;
     }
   }, [tarea]);
+
+  const handleDelete = () => {
+    const nuevoArreglo = tareas.filter((elemento) => {
+      return elemento.id !== tarea.id;
+    });
+
+    changeTareasArray(nuevoArreglo);
+  };
 
   const handleDone = () => {
     //? OPCION 1 (mas larga) ------------------------
@@ -54,19 +62,21 @@ const ListadoItem = (props) => {
 
     //? EN CUALQUIER CASO, TERMINAR CON: -----------------------
 
-    //* Guardo los nuevos valores (esto se podria, y deberia, hacer con un useEffect
-    //* dentro de App.js, cuando cambie la variable "tareas")
-    localStorage.setItem('tareas', JSON.stringify(nuevoArregloTareas));
-
     //* Llamo a cambiar la variable tareas de App.js con los nuevos valores
-    setTareas(nuevoArregloTareas);
+    changeTareasArray(nuevoArregloTareas);
   };
 
   return (
     <ListGroup.Item>
       <Form className='d-flex justify-content-between'>
         {tarea.tarea}
-        <Form.Check ref={checkboxRef} className='ms-4' onClick={handleDone} />
+        <div className='d-flex align-items-center'>
+          <Form.Check ref={checkboxRef} className='ms-4' onClick={handleDone} />
+          <i
+            className='fa-solid fa-trash ms-2 text-danger'
+            onClick={handleDelete}
+          ></i>
+        </div>
       </Form>
     </ListGroup.Item>
   );

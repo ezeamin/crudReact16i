@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 const FormTarea = (props) => {
-  const { tareas, setTareas } = props;
+  const { tareas, changeTareasArray } = props;
 
   const [tarea, setTarea] = useState('');
 
@@ -27,7 +27,7 @@ const FormTarea = (props) => {
     inputRef.current.classList.remove('is-invalid');
 
     const nuevasTareas = [
-      ...tareas, //Operador "spread"
+      ...tareas, // Operador "spread"
       {
         tarea, // tarea: tarea, -> es lo mismo
         isDone: false,
@@ -35,9 +35,11 @@ const FormTarea = (props) => {
       },
     ];
 
-    setTareas(nuevasTareas);
+    // tareas.push({}) -> INVALIDO, no se puede modificar las props ni el estado directamente
 
-    localStorage.setItem('tareas', JSON.stringify(nuevasTareas));
+    changeTareasArray(nuevasTareas);
+
+    setTarea('');
   };
 
   return (
